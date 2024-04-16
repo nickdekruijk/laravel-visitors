@@ -13,8 +13,8 @@ Publish the config file if the defaults doesn't suite your needs:
 
 ```php artisan vendor:publish --provider="NickDeKruijk\LaravelVisitors\ServiceProvider"```
 
-### Seperate databases
-You might want to seperate the visitors database from the main application database for performance. Add a new connection in your `config/database.php` connections array for example:
+### Separate databases
+You might want to separate the visitors database from the main application database for performance or to avoid conflicts. Add a new connection in your `config/database.php` connections array for example:
 
 ```php
         'visitors' => [
