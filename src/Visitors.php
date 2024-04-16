@@ -47,7 +47,7 @@ class Visitors
         // Group by month and year, different methods for sqlite and mysql
         if (self::databaseDriver() == 'sqlite') {
             return Visitor::valid()
-                ->selectRaw('created_at,count(id) as `visitors`, strftime("%Y", created_at) as year, strftime("%m", created_at) as month')
+                ->selectRaw('created_at, count(id) as visitors, strftime("%Y", created_at) as year, strftime("%m", created_at) as month')
                 ->groupBy('year', 'month')
                 ->get();
         } else {
