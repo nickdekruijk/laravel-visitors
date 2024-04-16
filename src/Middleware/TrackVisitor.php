@@ -4,7 +4,10 @@ namespace NickDeKruijk\LaravelVisitors\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Jenssegers\Agent\Agent;
+use NickDeKruijk\LaravelVisitors\Models\Visitor;
 use Symfony\Component\HttpFoundation\Response;
+use Torann\GeoIP\Facades\GeoIP;
 
 class TrackVisitor
 {
@@ -22,13 +25,12 @@ class TrackVisitor
 
             // New visitor, create a new UUID
             $new_uuid = uuid_create();
-            session(['visits_uuid' =>  $new_uuid]);
 
             // Anonymize IP address
             $ip = inet_ntop(inet_pton($request->ip()) & inet_pton("255.255.255.0"));
 
             // Get GeoIP data
-            $geo = GeoIP::getLocation('89.0.142.86');
+            $geo = GeoIP::getLocation($ip);
 
             // Handle user agent
             $agent = new Agent();
@@ -62,6 +64,9 @@ class TrackVisitor
                 'phone' => $agent->isPhone(),
                 'robot' => $agent->robot() ?: null,
             ]);
+
+            // Store UUID in session
+            session(['visits_uuid' =>  $new_uuid]);
         }
 
         return $next($request);
