@@ -17,8 +17,7 @@
 	],
 	"require": {
 		"php": ">=8.2",
-        "jenssegers/agent": "^2.6",
-        "torann/geoip": "^3.0"
+        "jenssegers/agent": "^2.6"	
 	},
 	"autoload": {
 		"psr-4": {

@@ -16,9 +16,6 @@ return new class extends Migration
         Schema::connection(config('visitors.db_connection'))->create(config('visitors.table_prefix') . 'visitors', function (Blueprint $table) {
             $table->id();
 
-            // UUID, used to check for repeated visits
-            $table->uuid('uuid')->unique();
-
             // IP address
             $table->string('ip')->nullable();
             $table->string('ipv6')->nullable();
@@ -27,29 +24,40 @@ return new class extends Migration
             $table->string('user_agent')->nullable();
             $table->string('accept_language')->nullable();
 
-            // GeoIP data
-            $table->string('country_iso')->nullable();
+            // GeoIP data https://ip-api.com/docs/api:json#test
+            $table->string('continent')->nullable();
+            $table->string('continentCode')->nullable()->index();
             $table->string('country')->nullable();
-            $table->string('city')->nullable();
-            $table->string('state')->nullable();
-            $table->string('state_name')->nullable();
-            $table->string('postal_code')->nullable();
+            $table->string('countryCode')->nullable()->index();
+            $table->string('region')->nullable();
+            $table->string('regionName')->nullable();
+            $table->string('city')->nullable()->index();
+            $table->string('district')->nullable();
+            $table->string('zip')->nullable();
             $table->string('lat')->nullable();
             $table->string('lon')->nullable();
-            $table->string('timezone')->nullable();
-            $table->string('continent')->nullable();
+            $table->string('timezone')->nullable()->index();
+            $table->string('offset')->nullable();
             $table->string('currency')->nullable();
+            $table->string('isp')->nullable();
+            $table->string('org')->nullable();
+            $table->string('as')->nullable();
+            $table->string('asname')->nullable();
+            $table->string('reverse')->nullable();
+            $table->boolean('mobile')->nullable();
+            $table->boolean('proxy')->nullable();
+            $table->boolean('hosting')->nullable();
 
             // User Agent parsing
             $table->string('languages')->nullable();
-            $table->string('device')->nullable();
-            $table->string('platform')->nullable();
+            $table->string('device')->nullable()->index();
+            $table->string('platform')->nullable()->index();
             $table->string('platform_version')->nullable();
-            $table->string('browser')->nullable();
+            $table->string('browser')->nullable()->index();
             $table->string('browser_version')->nullable();
-            $table->boolean('desktop')->nullable();
-            $table->boolean('phone')->nullable();
-            $table->string('robot')->nullable();
+            $table->boolean('desktop')->nullable()->index();
+            $table->boolean('phone')->nullable()->index();
+            $table->string('robot')->nullable()->index();
             $table->timestamps();
         });
     }
@@ -61,6 +69,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('visits')->dropIfExists('visitors');
+        Schema::connection(config('visitors.db_connection'))->dropIfExists(config('visitors.table_prefix') . 'visitors');
     }
 };
