@@ -52,8 +52,8 @@ class Visitors
                 ->get();
         } else {
             return Visitor::valid()
-                ->select(DB::raw('created_at,count(id) as `visitors`'), DB::raw("DATE_FORMAT(created_at, '%m-%Y') new_date"),  DB::raw('YEAR(created_at) year, MONTH(created_at) month'))
-                ->groupby('year', 'month')
+                ->selectRaw('min(created_at) as created_at, count(id) as visitors, year(created_at) as year, monthname(created_at) as month')
+                ->groupBy('year', 'month')
                 ->get();
         }
     }
