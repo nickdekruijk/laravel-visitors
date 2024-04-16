@@ -5,6 +5,7 @@ namespace NickDeKruijk\LaravelVisitors\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use NickDeKruijk\LaravelVisitors\Models\Visitor;
+use NickDeKruijk\LaravelVisitors\Visitors;
 use Symfony\Component\HttpFoundation\Response;
 
 class TrackVisitor
@@ -22,12 +23,9 @@ class TrackVisitor
         if (!session('visitors_id')) {
             // New visitior has not been tracked
 
-            // Anonymize IP address
-            $ip = inet_ntop(inet_pton($request->ip()) & inet_pton("255.255.255.0"));
-
             // Store visitor in database
             $visitor = Visitor::create([
-                'ip' => $ip,
+                'ip' => Visitors::anonymize_ip($request->ip()),
                 'user_agent' => $request->userAgent(),
                 'accept_language' => $request->header('Accept-Language'),
             ]);
