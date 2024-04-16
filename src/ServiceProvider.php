@@ -19,6 +19,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         if (config('visitors.migrations')) {
             $this->loadMigrationsFrom(__DIR__ . '/../migrations');
         }
+
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'visitors');
     }
 
     /**

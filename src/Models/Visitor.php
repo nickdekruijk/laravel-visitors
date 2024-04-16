@@ -21,4 +21,9 @@ class Visitor extends Model
     protected $guarded = [
         'id',
     ];
+
+    public function scopeValid($query)
+    {
+        return $query->whereNull('robot');
+    }
 }
