@@ -11,7 +11,11 @@ class Visitor extends Model
 
     public function __construct()
     {
+        // Set database connection
         $this->connection = config('visitors.db_connection');
+
+        // Set table name
+        $this->table = config('visitors.table_prefix') . 'visitors';
     }
 
     protected $guarded = [
