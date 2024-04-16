@@ -2,6 +2,6 @@
 
 namespace NickDeKruijk\LaravelVisitors;
 
-class Visitor
+class Visitors
 {
 }

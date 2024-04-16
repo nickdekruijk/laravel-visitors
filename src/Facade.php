@@ -1,6 +1,6 @@
 <?php
 
-namespace NickDeKruijk\Leap;
+namespace NickDeKruijk\LaravelVisitors;
 
 class Facade extends \Illuminate\Support\Facades\Facade
 {
@@ -11,6 +11,6 @@ class Facade extends \Illuminate\Support\Facades\Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'leap';
+        return 'visitors';
     }
 }

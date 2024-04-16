@@ -31,7 +31,7 @@
 				"NickDeKruijk\\LaravelVisitors\\ServiceProvider"
 			],
 			"aliases": {
-				"Leap": "NickDeKruijk\\LaravelVisitors\\Facade"
+				"Visitors": "NickDeKruijk\\LaravelVisitors\\Facade"
 			}
 		}
 	}

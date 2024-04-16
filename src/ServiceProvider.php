@@ -32,7 +32,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         // Register the main class to use with the facade
         $this->app->singleton('visitors', function () {
-            return new Visitor;
+            return new Visitors;
         });
     }
 }
