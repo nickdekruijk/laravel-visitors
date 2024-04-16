@@ -1,11 +1,5 @@
 <?php
 
-use NickDeKruijk\Leap\Livewire\Dashboard;
-use NickDeKruijk\Leap\Livewire\Profile;
-use NickDeKruijk\Leap\Navigation\Divider;
-use NickDeKruijk\Leap\Navigation\Logout;
-use NickDeKruijk\Leap\Navigation\Organizations;
-
 return [
 
     /*
@@ -13,8 +7,8 @@ return [
     | db_connection
     |--------------------------------------------------------------------------
     |
-    | The package inclused migrations to create tables. The created tables name
-    | will use this prefix, e.g. 'leap_' for leap_roles and leap_role_user.
+    | The database connection that should be used to store visitor data.
+    | By default, the package will use the default database connection.
     |
     */
     'db_connection' => env('VISITORS_DB_CONNECTION', config('database.default')),
@@ -24,8 +18,7 @@ return [
     | migrations
     |--------------------------------------------------------------------------
     |
-    | The package includes several migrations to create tables.
-    | This setting enables/disables these migrations.
+    | Enable or disable the migrations included in the package.
     |
     */
     'migrations' => true,
@@ -35,8 +28,8 @@ return [
     | table_prefix
     |--------------------------------------------------------------------------
     |
-    | The package inclused migrations to create tables. The created tables name
-    | will use this prefix, e.g. 'leap_' for leap_roles and leap_role_user.
+    | The package inclused migrations to create tables. The created table names
+    | will use this prefix.
     |
     */
     'table_prefix' => 'visitors_',
