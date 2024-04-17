@@ -40,7 +40,7 @@ class Visitors
      *
      * This function groups the visitors by month and year, using different methods for SQLite and MySQL.
      *
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection The monthly visitors.
+     * @return \Illuminate\Database\Eloquent\Collection The monthly visitors.
      */
     public static function monthlyVisitors(): Collection
     {
