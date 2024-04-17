@@ -27,24 +27,28 @@ class TrackVisitor
             // Parse User Agent
             $agent = new Agent();
 
-            // Store visitor in database
-            $visitor = Visitor::create([
-                'ip' => Visitors::anonymizeIp($request->ip()),
-                'user_agent' => $request->userAgent(),
-                'accept_language' => $request->header('Accept-Language'),
-                'languages' => implode(',', $agent->languages()),
-                'device' => $agent->device(),
-                'platform' => $agent->platform(),
-                'platform_version' => $agent->version($agent->platform()),
-                'browser' => $agent->browser(),
-                'browser_version' => $agent->version($agent->browser()),
-                'desktop' => $agent->isDesktop(),
-                'phone' => $agent->isPhone(),
-                'robot' => $agent->robot() ?: null,
-            ]);
+            // Check if visitor is a robot, store visitor in database if not
+            if (!$agent->isRobot()) {
+                // Store visitor in database
+                $visitor = Visitor::create([
+                    'ip' => Visitors::anonymizeIp($request->ip()),
+                    'user_agent' => $request->userAgent(),
+                    'accept_language' => $request->header('Accept-Language'),
+                    'languages' => implode(',', $agent->languages()),
+                    'device' => $agent->device(),
+                    'platform' => $agent->platform(),
+                    'platform_version' => $agent->version($agent->platform()),
+                    'browser' => $agent->browser(),
+                    'browser_version' => $agent->version($agent->browser()),
+                    'desktop' => $agent->isDesktop(),
+                    'phone' => $agent->isPhone(),
+                    'tablet' => $agent->isTablet(),
+                    'robot' => $agent->robot() ?: null,
+                ]);
 
-            // Store visitor id in session
-            session(['visitors_id' =>  $visitor->id]);
+                // Store visitor id in session
+                session(['visitors_id' =>  $visitor->id]);
+            }
         }
 
         return $next($request);
