@@ -4,6 +4,7 @@ namespace NickDeKruijk\LaravelVisitors\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Jenssegers\Agent\Agent;
 use NickDeKruijk\LaravelVisitors\Models\Visitor;
 use NickDeKruijk\LaravelVisitors\Visitors;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,11 +24,23 @@ class TrackVisitor
         if (!session('visitors_id')) {
             // New visitior has not been tracked
 
+            // Parse User Agent
+            $agent = new Agent();
+
             // Store visitor in database
             $visitor = Visitor::create([
                 'ip' => Visitors::anonymize_ip($request->ip()),
                 'user_agent' => $request->userAgent(),
                 'accept_language' => $request->header('Accept-Language'),
+                'languages' => implode(',', $agent->languages()),
+                'device' => $agent->device(),
+                'platform' => $agent->platform(),
+                'platform_version' => $agent->version($agent->platform()),
+                'browser' => $agent->browser(),
+                'browser_version' => $agent->version($agent->browser()),
+                'desktop' => $agent->isDesktop(),
+                'phone' => $agent->isPhone(),
+                'robot' => $agent->robot() ?: null,
             ]);
 
             // Store visitor id in session
