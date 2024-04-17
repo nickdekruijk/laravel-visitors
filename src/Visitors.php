@@ -2,6 +2,7 @@
 
 namespace NickDeKruijk\LaravelVisitors;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use NickDeKruijk\LaravelVisitors\Models\Visitor;
 
@@ -101,8 +102,27 @@ class Visitors
         }
     }
 
-    public function latestVisitors(int $take = null)
+    /**
+     * Retrieve the latest visitors from the Visitor model.
+     *
+     * @param int|Carbon $take The number of visitors to take, or a specific date/time to filter by.
+     * @return \Illuminate\Database\Eloquent\Collection The latest visitors.
+     */
+    public function latestVisitors(int|Carbon $take = null): \Illuminate\Database\Eloquent\Collection
     {
-        return Visitor::valid()->take($take)->get();
+        // Start query for visitors
+        $visitors = Visitor::valid()->orderByDesc('id');
+
+        // If an integer is provided, take the specified number of visitors
+        if (is_int($take)) {
+            $visitors->take($take);
+        }
+        // Otherwise, filter by the provided date/time
+        else {
+            $visitors->where('created_at', '>=', $take);
+        }
+
+        // Return the latest visitors
+        return $visitors->get();
     }
 }
