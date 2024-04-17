@@ -58,6 +58,9 @@ return new class extends Migration
             $table->boolean('desktop')->nullable()->index();
             $table->boolean('phone')->nullable()->index();
             $table->string('robot')->nullable()->index();
+
+            // Timestamps
+            $table->dateTime('parsed_at')->nullable()->index();
             $table->timestamps();
         });
     }
