@@ -24,13 +24,25 @@ return new class extends Migration
             $table->string('user_agent')->nullable();
             $table->string('accept_language')->nullable();
 
+            // User Agent parsing
+            $table->string('languages')->nullable();
+            $table->string('device')->nullable()->index();
+            $table->string('platform')->nullable()->index();
+            $table->string('platform_version')->nullable();
+            $table->string('browser')->nullable()->index();
+            $table->string('browser_version')->nullable();
+            $table->boolean('desktop')->nullable()->index();
+            $table->boolean('phone')->nullable()->index();
+            $table->boolean('tablet')->nullable()->index();
+            $table->string('robot')->nullable()->index();
+
             // GeoIP data https://ip-api.com/docs/api:json#test
             $table->string('continent')->nullable();
-            $table->string('continentCode')->nullable()->index();
+            $table->string('continent_code')->nullable()->index();
             $table->string('country')->nullable();
-            $table->string('countryCode')->nullable()->index();
+            $table->string('country_code')->nullable()->index();
             $table->string('region')->nullable();
-            $table->string('regionName')->nullable();
+            $table->string('region_name')->nullable();
             $table->string('city')->nullable()->index();
             $table->string('district')->nullable();
             $table->string('zip')->nullable();
@@ -42,22 +54,11 @@ return new class extends Migration
             $table->string('isp')->nullable();
             $table->string('org')->nullable();
             $table->string('as')->nullable();
-            $table->string('asname')->nullable();
+            $table->string('as_name')->nullable();
             $table->string('reverse')->nullable();
             $table->boolean('mobile')->nullable();
             $table->boolean('proxy')->nullable();
             $table->boolean('hosting')->nullable();
-
-            // User Agent parsing
-            $table->string('languages')->nullable();
-            $table->string('device')->nullable()->index();
-            $table->string('platform')->nullable()->index();
-            $table->string('platform_version')->nullable();
-            $table->string('browser')->nullable()->index();
-            $table->string('browser_version')->nullable();
-            $table->boolean('desktop')->nullable()->index();
-            $table->boolean('phone')->nullable()->index();
-            $table->string('robot')->nullable()->index();
 
             // Timestamps
             $table->dateTime('parsed_at')->nullable()->index();
