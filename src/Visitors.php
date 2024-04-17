@@ -2,8 +2,6 @@
 
 namespace NickDeKruijk\LaravelVisitors;
 
-use Carbon\Carbon;
-use DB;
 use Illuminate\Database\Eloquent\Collection;
 use NickDeKruijk\LaravelVisitors\Models\Visitor;
 
