@@ -15,7 +15,7 @@ class Visitors
      * @param string $ip The IP address to be anonymized.
      * @return string The anonymized IP address.
      */
-    public static function anonymize_ip(string $ip): string
+    public static function anonymizeIp(string $ip): string
     {
         return inet_ntop(inet_pton($ip) & inet_pton("255.255.255.0"));
     }

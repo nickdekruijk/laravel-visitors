@@ -29,7 +29,7 @@ class TrackVisitor
 
             // Store visitor in database
             $visitor = Visitor::create([
-                'ip' => Visitors::anonymize_ip($request->ip()),
+                'ip' => Visitors::anonymizeIp($request->ip()),
                 'user_agent' => $request->userAgent(),
                 'accept_language' => $request->header('Accept-Language'),
                 'languages' => implode(',', $agent->languages()),
