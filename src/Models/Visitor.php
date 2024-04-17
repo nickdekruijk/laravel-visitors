@@ -26,4 +26,9 @@ class Visitor extends Model
     {
         return $query->whereNull('robot');
     }
+
+    public function getHardwareAttribute()
+    {
+        return $this->desktop ? 'Desktop' : ($this->tablet ? 'Tablet' : 'Mobile');
+    }
 }

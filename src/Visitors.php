@@ -34,6 +34,29 @@ class Visitors
     }
 
     /**
+     * Retrieves the yearly visitors from the Visitor model.
+     *
+     * This function groups the visitors by year, using different methods for SQLite and MySQL.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection The monthly visitors.
+     */
+    public static function yearlyVisitors(): Collection
+    {
+        // Group by year, different methods for sqlite and mysql
+        if (self::databaseDriver() == 'sqlite') {
+            return Visitor::valid()
+                ->selectRaw('created_at, count(id) as visitors, strftime("%Y", created_at) as year')
+                ->groupBy('year')
+                ->get();
+        } else {
+            return Visitor::valid()
+                ->selectRaw('min(created_at) as created_at, count(id) as visitors, year(created_at) as year')
+                ->groupBy('year')
+                ->get();
+        }
+    }
+
+    /**
      * Retrieves the monthly visitors from the Visitor model.
      *
      * This function groups the visitors by month and year, using different methods for SQLite and MySQL.
@@ -50,9 +73,36 @@ class Visitors
                 ->get();
         } else {
             return Visitor::valid()
-                ->selectRaw('min(created_at) as created_at, count(id) as visitors, year(created_at) as year, monthname(created_at) as month')
+                ->selectRaw('min(created_at) as created_at, count(id) as visitors, year(created_at) as year, month(created_at) as month')
                 ->groupBy('year', 'month')
                 ->get();
         }
+    }
+    /**
+     * Retrieves the monthly visitors from the Visitor model.
+     *
+     * This function groups the visitors by month and year, using different methods for SQLite and MySQL.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection The monthly visitors.
+     */
+    public static function dailyVisitors(): Collection
+    {
+        // Group by month and year, different methods for sqlite and mysql
+        if (self::databaseDriver() == 'sqlite') {
+            return Visitor::valid()
+                ->selectRaw('created_at, count(id) as visitors, strftime("%Y", created_at) as year, strftime("%m", created_at) as month, strftime("%d", created_at) as day')
+                ->groupBy('year', 'month', 'day')
+                ->get();
+        } else {
+            return Visitor::valid()
+                ->selectRaw('min(created_at) as created_at, count(id) as visitors, year(created_at) as year, month(created_at) as month, day(created_at) as day')
+                ->groupBy('year', 'month', 'day')
+                ->get();
+        }
+    }
+
+    public function latestVisitors(int $take = null)
+    {
+        return Visitor::valid()->take($take)->get();
     }
 }
