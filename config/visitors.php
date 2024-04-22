@@ -28,7 +28,7 @@ return [
     | table_prefix
     |--------------------------------------------------------------------------
     |
-    | The package inclused migrations to create tables. The created table names
+    | The package includes migrations to create tables. The created table names
     | will use this prefix.
     |
     */
