@@ -125,4 +125,34 @@ class Visitors
         // Return the latest visitors
         return $visitors->get();
     }
+
+
+    /**
+     * Updates the visitors screen information and sets the 'visitors.javascript' session variable to true to avoid running it again.
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException if the visitor with the given ID is not found
+     */
+    public function xhr()
+    {
+        $visitor = Visitor::findOrFail(session('visitors.id'));
+        $visitor->javascript = true;
+        $visitor->screen_width = request()->w;
+        $visitor->screen_height = request()->h;
+        $visitor->screen_color_depth = request()->c;
+        $visitor->screen_pixel_ratio = request()->p;
+        $visitor->viewport_width = request()->vw;
+        $visitor->viewport_height = request()->vh;
+        $visitor->save();
+        session(['visitors.javascript' => true]);
+    }
+
+    public function pixel()
+    {
+        $visitor = Visitor::findOrFail(session('visitors.id'));
+        $visitor->pixel = true;
+        $visitor->save();
+        $raw_image_string = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
+        session(['visitors.pixel' => true]);
+        return response($raw_image_string)->header('Content-Type', 'image/png');
+    }
 }

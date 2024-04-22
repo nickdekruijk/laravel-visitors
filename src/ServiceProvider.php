@@ -20,6 +20,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $this->loadMigrationsFrom(__DIR__ . '/../migrations');
         }
 
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'visitors');
     }
 

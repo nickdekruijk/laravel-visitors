@@ -21,7 +21,7 @@ class TrackVisitor
     public function handle(Request $request, Closure $next): Response
     {
         // Check if visitor is already tracked by looking for visitors_id in session
-        if (!session('visitors_id')) {
+        if (!session('visitors.id')) {
             // New visitior has not been tracked
 
             // Parse User Agent
@@ -47,7 +47,7 @@ class TrackVisitor
                 ]);
 
                 // Store visitor id in session
-                session(['visitors_id' =>  $visitor->id]);
+                session(['visitors' => ['id' => $visitor->id]]);
             }
         }
 

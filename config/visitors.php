@@ -34,4 +34,16 @@ return [
     */
     'table_prefix' => 'visitors_',
 
+    /*
+    |--------------------------------------------------------------------------
+    | route_prefix
+    |--------------------------------------------------------------------------
+    |
+    | The package requires a few routes to work properly. The created routes
+    | will use this prefix. The tracking pixel will add .png to this prefix and
+    | the javscript will make an XHR post to this route.
+    |
+    */
+    'route_prefix' => env('VISITORS_ROUTE_PREFIX', '/api/visitors'),
+
 ];
