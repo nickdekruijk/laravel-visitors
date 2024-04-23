@@ -65,7 +65,7 @@
             </table>
             <table>
                 <tr>
-                    <th>Afgelopen uur</th>
+                    <th>Laatste 25</th>
                     <th>IP adres</th>
                     <th>Hardware</th>
                     <th>OS</th>
@@ -74,7 +74,7 @@
                     <th>Screen</th>
                     <th>Viewport</th>
                 </tr>
-                @foreach (Visitors::latestVisitors(now()->subMinutes(60)) as $visitor)
+                @foreach (Visitors::latestVisitors(25) as $visitor)
                     <tr>
                         <td>{{ $visitor->created_at->isoFormat('dd D MMM YYYY HH:mm') }}</td>
                         <td class="right">{{ trim($visitor->ip, '.0') }}.?</td>

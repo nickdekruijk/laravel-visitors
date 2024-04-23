@@ -115,7 +115,7 @@ class Visitors
 
         // If an integer is provided, take the specified number of visitors
         if (is_int($take)) {
-            $visitors->take($take);
+            $visitors->filtered()->take($take);
         }
         // Otherwise, filter by the provided date/time
         else {

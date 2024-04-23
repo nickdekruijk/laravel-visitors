@@ -27,6 +27,11 @@ class Visitor extends Model
         return $query->whereNull('robot');
     }
 
+    public function scopeFiltered($query)
+    {
+        $query->where('javascript', 1)->orWhere('pixel', 1);
+    }
+
     public function getHardwareAttribute()
     {
         return $this->desktop ? 'Desktop' : ($this->tablet ? 'Tablet' : 'Mobile');
