@@ -45,12 +45,12 @@ class Visitors
     {
         // Group by year, different methods for sqlite and mysql
         if (self::databaseDriver() == 'sqlite') {
-            return Visitor::valid()
+            return Visitor::filtered()
                 ->selectRaw('created_at, count(id) as visitors, strftime("%Y", created_at) as year')
                 ->groupBy('year')
                 ->get();
         } else {
-            return Visitor::valid()
+            return Visitor::filtered()
                 ->selectRaw('min(created_at) as created_at, count(id) as visitors, year(created_at) as year')
                 ->groupBy('year')
                 ->get();
@@ -68,12 +68,12 @@ class Visitors
     {
         // Group by month and year, different methods for sqlite and mysql
         if (self::databaseDriver() == 'sqlite') {
-            return Visitor::valid()
+            return Visitor::filtered()
                 ->selectRaw('created_at, count(id) as visitors, strftime("%Y", created_at) as year, strftime("%m", created_at) as month')
                 ->groupBy('year', 'month')
                 ->get();
         } else {
-            return Visitor::valid()
+            return Visitor::filtered()
                 ->selectRaw('min(created_at) as created_at, count(id) as visitors, year(created_at) as year, month(created_at) as month')
                 ->groupBy('year', 'month')
                 ->get();
@@ -90,12 +90,12 @@ class Visitors
     {
         // Group by month and year, different methods for sqlite and mysql
         if (self::databaseDriver() == 'sqlite') {
-            return Visitor::valid()
+            return Visitor::filtered()
                 ->selectRaw('created_at, count(id) as visitors, strftime("%Y", created_at) as year, strftime("%m", created_at) as month, strftime("%d", created_at) as day')
                 ->groupBy('year', 'month', 'day')
                 ->get();
         } else {
-            return Visitor::valid()
+            return Visitor::filtered()
                 ->selectRaw('min(created_at) as created_at, count(id) as visitors, year(created_at) as year, month(created_at) as month, day(created_at) as day')
                 ->groupBy('year', 'month', 'day')
                 ->get();
@@ -111,11 +111,11 @@ class Visitors
     public function latestVisitors(int|Carbon $take = null): \Illuminate\Database\Eloquent\Collection
     {
         // Start query for visitors
-        $visitors = Visitor::valid()->orderByDesc('id');
+        $visitors = Visitor::filtered()->orderByDesc('id');
 
         // If an integer is provided, take the specified number of visitors
         if (is_int($take)) {
-            $visitors->filtered()->take($take);
+            $visitors->take($take);
         }
         // Otherwise, filter by the provided date/time
         else {
