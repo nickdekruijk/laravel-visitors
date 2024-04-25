@@ -151,6 +151,7 @@ class VisitorController extends Controller
                     'desktop' => $agent->isDesktop(),
                     'phone' => $agent->isPhone(),
                     'tablet' => $agent->isTablet(),
+                    'javascript' => true,
                     'screen_width' => request()->w,
                     'screen_height' => request()->h,
                     'screen_color_depth' => request()->c,
