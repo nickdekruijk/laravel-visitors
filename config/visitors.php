@@ -39,11 +39,12 @@ return [
     | route_prefix
     |--------------------------------------------------------------------------
     |
-    | The package requires a few routes to work properly. The created routes
-    | will use this prefix. The tracking pixel will add .png to this prefix and
-    | the javscript will make an XHR post to this route.
+    | To track visitors we need to be able to do some XHR requests. Each 
+    | page will do a POST to this route to track visitors. The default route
+    | will be fine for most sites but you can change it here in case it
+    | conflicts with another route or when some adblocker blocks it.
     |
     */
-    'route_prefix' => env('VISITORS_ROUTE_PREFIX', '/api/visitors'),
+    'route_prefix' => env('VISITORS_ROUTE_PREFIX', '/visitors/api'),
 
 ];

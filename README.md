@@ -24,10 +24,15 @@ You might want to separate the visitors database from the main application datab
 ```
 And change db_connection configuration in the `config/visitors.php` file or add VISITORS_DB_CONNECTION in your .env file.
 
-### Apply Middleware
-Apply the TrackVisitor middleware to all routes you want to track visits for.
-```php
-use NickDeKruijk\LaravelVisitors\Middleware\TrackVisitor;
+### Include Javascript
+Make sure the [`resources/js/laravel-visitors.js`](https://github.com/nickdekruijk/laravel-visitors/blob/master/resources/js/laravel-visitors.js) file is loaded in each pagevisit, preferably using something like webpack/vite or my [minify](https://github.com/nickdekruijk/minify) package.
 
-Route::get('page', 'PageController@index')->middleware(TrackVisitor::class);
+Also make sure your add the ```@trackvisit``` blade directive inside your view before loading the above javascript, a good spot might be directly after the \<head> tag in your `app.blade.php` layout file.
+```html
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+    <head>
+        @trackvisit
+        <meta charset="utf-8">
 ```

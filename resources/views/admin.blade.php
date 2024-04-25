@@ -34,7 +34,7 @@
                 <tr>
                     <th colspan="2">Jaarlijks</th>
                 </tr>
-                @foreach (Visitors::yearlyVisitors() as $year)
+                @foreach (NickDeKruijk\LaravelVisitors\Controllers\VisitorController::yearlyVisitors() as $year)
                     <tr>
                         <td>{{ $year->year }}</td>
                         <td class="right">{{ $year->visitors }}</td>
@@ -45,7 +45,7 @@
                 <tr>
                     <th colspan="2">Maandelijks</th>
                 </tr>
-                @foreach (Visitors::monthlyVisitors() as $month)
+                @foreach (NickDeKruijk\LaravelVisitors\Controllers\VisitorController::monthlyVisitors() as $month)
                     <tr>
                         <td>{{ ucfirst($month->created_at->isoFormat('MMMM YYYY')) }}</td>
                         <td class="right">{{ $month->visitors }}</td>
@@ -56,7 +56,7 @@
                 <tr>
                     <th colspan="2">Dagelijks</th>
                 </tr>
-                @foreach (Visitors::dailyVisitors() as $month)
+                @foreach (NickDeKruijk\LaravelVisitors\Controllers\VisitorController::dailyVisitors() as $month)
                     <tr>
                         <td>{{ ucfirst($month->created_at->isoFormat('dd D MMMM YYYY')) }}</td>
                         <td class="right">{{ $month->visitors }}</td>
@@ -74,7 +74,7 @@
                     <th>Screen</th>
                     <th>Viewport</th>
                 </tr>
-                @foreach (Visitors::latestVisitors(25) as $visitor)
+                @foreach (NickDeKruijk\LaravelVisitors\Controllers\VisitorController::latestVisitors(25) as $visitor)
                     <tr>
                         <td>{{ $visitor->created_at->isoFormat('dd D MMM YYYY HH:mm') }}</td>
                         <td class="right">{{ trim($visitor->ip, '.0') }}.?</td>

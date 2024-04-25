@@ -29,10 +29,7 @@
 		"laravel": {
 			"providers": [
 				"NickDeKruijk\\LaravelVisitors\\ServiceProvider"
-			],
-			"aliases": {
-				"Visitors": "NickDeKruijk\\LaravelVisitors\\Facade"
-			}
+			]
 		}
 	}
 }

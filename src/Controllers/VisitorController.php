@@ -1,12 +1,14 @@
 <?php
 
-namespace NickDeKruijk\LaravelVisitors;
+namespace NickDeKruijk\LaravelVisitors\Controllers;
 
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Jenssegers\Agent\Agent;
 use NickDeKruijk\LaravelVisitors\Models\Visitor;
 
-class Visitors
+class VisitorController extends Controller
 {
     /**
      * Anonymizes the given IP address by applying a bitmask to it.
@@ -17,11 +19,6 @@ class Visitors
     public static function anonymizeIp(string $ip): string
     {
         return inet_ntop(inet_pton($ip) & inet_pton("255.255.255.0"));
-    }
-
-    public static function firstVisitor()
-    {
-        return Visitor::orderBy('created_at', 'desc')->first();
     }
 
     /**
@@ -108,7 +105,7 @@ class Visitors
      * @param int|Carbon $take The number of visitors to take, or a specific date/time to filter by.
      * @return \Illuminate\Database\Eloquent\Collection The latest visitors.
      */
-    public function latestVisitors(int|Carbon $take = null): \Illuminate\Database\Eloquent\Collection
+    public static function latestVisitors(int|Carbon $take = null): \Illuminate\Database\Eloquent\Collection
     {
         // Start query for visitors
         $visitors = Visitor::filtered()->orderByDesc('id');
@@ -126,33 +123,47 @@ class Visitors
         return $visitors->get();
     }
 
-
     /**
-     * Updates the visitors screen information and sets the 'visitors.javascript' session variable to true to avoid running it again.
-     *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException if the visitor with the given ID is not found
+     * Track visitor if not already tracked.
      */
     public function xhr()
     {
-        $visitor = Visitor::findOrFail(session('visitors.id'));
-        $visitor->javascript = true;
-        $visitor->screen_width = request()->w;
-        $visitor->screen_height = request()->h;
-        $visitor->screen_color_depth = request()->c;
-        $visitor->screen_pixel_ratio = request()->p;
-        $visitor->viewport_width = request()->vw;
-        $visitor->viewport_height = request()->vh;
-        $visitor->save();
-        session(['visitors.javascript' => true]);
-    }
+        // Check if visitor is already tracked by looking for visitors_id in session
+        if (!session('visitors.id')) {
+            // New visitior has not been tracked
 
-    public function pixel()
-    {
-        $visitor = Visitor::findOrFail(session('visitors.id'));
-        $visitor->pixel = true;
-        $visitor->save();
-        $raw_image_string = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
-        session(['visitors.pixel' => true]);
-        return response($raw_image_string)->header('Content-Type', 'image/png');
+            // Parse User Agent
+            $agent = new Agent();
+
+            // Check if visitor is a robot, store visitor in database if not
+            if (!$agent->isRobot()) {
+                // Store visitor in database
+                $visitor = Visitor::create([
+                    'ip' => self::anonymizeIp(request()->ip()),
+                    'user_agent' => request()->userAgent(),
+                    'accept_language' => request()->header('Accept-Language'),
+                    'languages' => implode(',', $agent->languages()),
+                    'device' => $agent->device(),
+                    'platform' => $agent->platform(),
+                    'platform_version' => $agent->version($agent->platform()),
+                    'browser' => $agent->browser(),
+                    'browser_version' => $agent->version($agent->browser()),
+                    'desktop' => $agent->isDesktop(),
+                    'phone' => $agent->isPhone(),
+                    'tablet' => $agent->isTablet(),
+                    'screen_width' => request()->w,
+                    'screen_height' => request()->h,
+                    'screen_color_depth' => request()->c,
+                    'screen_pixel_ratio' => request()->p,
+                    'viewport_width' => request()->vw,
+                    'viewport_height' => request()->vh,
+                    'touch' => request()->touch,
+                ]);
+
+                // Store visitor id in session_abort
+                session(['visitors' => ['id' => $visitor->id]]);
+            }
+        }
+        return 'Ok';
     }
 }

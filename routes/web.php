@@ -1,8 +1,7 @@
 <?php
 
-use NickDeKruijk\LaravelVisitors\Visitors;
+use NickDeKruijk\LaravelVisitors\Controllers\VisitorController;
 
 Route::middleware('web')->group(function () {
-    Route::get(config('visitors.route_prefix'), [Visitors::class, 'xhr'])->name('laravel-visitors.post');
-    Route::get(config('visitors.route_prefix') . '.png', [Visitors::class, 'pixel'])->name('laravel-visitors.pixel');
+    Route::post(config('visitors.route_prefix'), [VisitorController::class, 'xhr'])->name('laravel-visitors.post');
 });
