@@ -70,7 +70,6 @@
                     <th>Hardware</th>
                     <th>OS</th>
                     <th>Browser</th>
-                    <th>Method</th>
                     <th>Screen</th>
                     <th>Viewport</th>
                     <th>Pagina's</th>
@@ -82,7 +81,6 @@
                         <td>{{ $visitor->hardware }}</td>
                         <td>{{ $visitor->platform }}</td>
                         <td title="{{ $visitor->user_agent }}">{{ $visitor->browser }} {{ explode('.', $visitor->browser_version)[0] }}</td>
-                        <td class="center">{{ $visitor->javascript ? 'Js' : '' }} {{ $visitor->pixel ? 'Px' : '' }}</td>
                         <td class="center">{{ $visitor->screen_width }} x {{ $visitor->screen_height }}{{ $visitor->screen_pixel_ratio ? ' @' . $visitor->screen_pixel_ratio . 'x' : '' }}</td>
                         <td class="center">{{ $visitor->viewport_width }} x {{ $visitor->viewport_height }}</td>
                         <td class="right">{{ $visitor->pageviews }}</td>
