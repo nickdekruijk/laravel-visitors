@@ -159,12 +159,19 @@ class VisitorController extends Controller
                     'viewport_width' => request()->vw,
                     'viewport_height' => request()->vh,
                     'touch' => in_array(request()->touch, ['1', 'true', true]),
+                    'pageview' => 1,
                 ]);
 
                 // Store visitor id in session_abort
                 session(['visitors' => ['id' => $visitor->id]]);
             }
+        } else {
+            $visitor = Visitor::find(session('visitors.id'));
+
+            // Update visitor pagecount
+            $visitor->pageviews += 1;
+            $visitor->save();
         }
-        return 'Ok';
+        return $visitor->pageviews;
     }
 }

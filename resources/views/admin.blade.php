@@ -73,6 +73,7 @@
                     <th>Method</th>
                     <th>Screen</th>
                     <th>Viewport</th>
+                    <th>Pagina's</th>
                 </tr>
                 @foreach (NickDeKruijk\LaravelVisitors\Controllers\VisitorController::latestVisitors(25) as $visitor)
                     <tr>
@@ -84,6 +85,7 @@
                         <td class="center">{{ $visitor->javascript ? 'Js' : '' }} {{ $visitor->pixel ? 'Px' : '' }}</td>
                         <td class="center">{{ $visitor->screen_width }} x {{ $visitor->screen_height }}{{ $visitor->screen_pixel_ratio ? ' @' . $visitor->screen_pixel_ratio . 'x' : '' }}</td>
                         <td class="center">{{ $visitor->viewport_width }} x {{ $visitor->viewport_height }}</td>
+                        <td class="right">{{ $visitor->pageviews }}</td>
                     </tr>
                 @endforeach
             </table>
