@@ -158,7 +158,7 @@ class VisitorController extends Controller
                     'screen_pixel_ratio' => request()->p,
                     'viewport_width' => request()->vw,
                     'viewport_height' => request()->vh,
-                    'touch' => request()->touch,
+                    'touch' => in_array(request()->touch, ['1', 'true', true]),
                 ]);
 
                 // Store visitor id in session_abort

@@ -11,5 +11,5 @@ if (typeof laravel_visitors !== 'undefined') {
 		+ "&c=" + screen.colorDepth
 		+ "&vw=" + window.innerWidth
 		+ "&vh=" + window.innerHeight
-		+ "&touch=" + (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0) || 0));
+		+ "&touch=" + (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)));
 }
