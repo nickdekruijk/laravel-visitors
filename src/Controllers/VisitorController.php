@@ -128,43 +128,43 @@ class VisitorController extends Controller
      */
     public function xhr()
     {
+        // Parse User Agent
+        $agent = new Agent();
+
+        // We don't want to track robots
+        if ($agent->isRobot()) {
+            return -1;
+        }
+
         // Check if visitor is already tracked by looking for visitors_id in session
         if (!session('visitors.id')) {
-            // New visitior has not been tracked
+            // New visitior has not been tracked, save in database
+            $visitor = Visitor::create([
+                'ip' => self::anonymizeIp(request()->ip()),
+                'user_agent' => request()->userAgent(),
+                'accept_language' => request()->header('Accept-Language'),
+                'languages' => implode(',', $agent->languages()),
+                'device' => $agent->device(),
+                'platform' => $agent->platform(),
+                'platform_version' => $agent->version($agent->platform()),
+                'browser' => $agent->browser(),
+                'browser_version' => $agent->version($agent->browser()),
+                'desktop' => $agent->isDesktop(),
+                'phone' => $agent->isPhone(),
+                'tablet' => $agent->isTablet(),
+                'javascript' => true,
+                'screen_width' => request()->w,
+                'screen_height' => request()->h,
+                'screen_color_depth' => request()->c,
+                'screen_pixel_ratio' => request()->p,
+                'viewport_width' => request()->vw,
+                'viewport_height' => request()->vh,
+                'touch' => in_array(request()->touch, ['1', 'true', true]),
+                'pageviews' => 1,
+            ]);
 
-            // Parse User Agent
-            $agent = new Agent();
-
-            // Check if visitor is a robot, store visitor in database if not
-            if (!$agent->isRobot()) {
-                // Store visitor in database
-                $visitor = Visitor::create([
-                    'ip' => self::anonymizeIp(request()->ip()),
-                    'user_agent' => request()->userAgent(),
-                    'accept_language' => request()->header('Accept-Language'),
-                    'languages' => implode(',', $agent->languages()),
-                    'device' => $agent->device(),
-                    'platform' => $agent->platform(),
-                    'platform_version' => $agent->version($agent->platform()),
-                    'browser' => $agent->browser(),
-                    'browser_version' => $agent->version($agent->browser()),
-                    'desktop' => $agent->isDesktop(),
-                    'phone' => $agent->isPhone(),
-                    'tablet' => $agent->isTablet(),
-                    'javascript' => true,
-                    'screen_width' => request()->w,
-                    'screen_height' => request()->h,
-                    'screen_color_depth' => request()->c,
-                    'screen_pixel_ratio' => request()->p,
-                    'viewport_width' => request()->vw,
-                    'viewport_height' => request()->vh,
-                    'touch' => in_array(request()->touch, ['1', 'true', true]),
-                    'pageviews' => 1,
-                ]);
-
-                // Store visitor id in session_abort
-                session(['visitors' => ['id' => $visitor->id]]);
-            }
+            // Store visitor id in session_abort
+            session(['visitors' => ['id' => $visitor->id]]);
         } else {
             $visitor = Visitor::find(session('visitors.id'));
 
