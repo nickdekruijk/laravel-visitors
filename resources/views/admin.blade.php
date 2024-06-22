@@ -2,6 +2,10 @@
 
 @section('view')
     <style>
+        .fullpage {
+            overflow: auto
+        }
+
         .visitors {
             display: flex;
             gap: 15px;
