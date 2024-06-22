@@ -39,5 +39,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/visitors.php', 'visitors');
+        $this->app->singleton('visitors', function () {
+            return new Visitors;
+        });
     }
 }
