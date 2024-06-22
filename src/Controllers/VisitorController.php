@@ -165,13 +165,9 @@ class VisitorController extends Controller
 
             // Store visitor id in session_abort
             session(['visitors' => ['id' => $visitor->id]]);
+            return 'Ok';
         } else {
-            $visitor = Visitor::find(session('visitors.id'));
-
-            // Update visitor pagecount
-            $visitor->pageviews += 1;
-            $visitor->save();
+            return 'Not found';
         }
-        return $visitor->pageviews;
     }
 }
