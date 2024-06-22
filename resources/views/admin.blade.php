@@ -81,7 +81,7 @@
                 @foreach (NickDeKruijk\LaravelVisitors\Controllers\VisitorController::latestVisitors(25) as $visitor)
                     <tr>
                         <td>{{ $visitor->created_at->isoFormat('dd D MMM YYYY HH:mm') }}</td>
-                        <td class="right">{{ trim($visitor->ip, '.0') }}.?</td>
+                        <td class="right">{{ trim($visitor->ip, '0') }}x</td>
                         <td>{{ $visitor->hardware }}</td>
                         <td>{{ $visitor->platform }}</td>
                         <td title="{{ $visitor->user_agent }}">{{ $visitor->browser }} {{ explode('.', $visitor->browser_version)[0] }}</td>
